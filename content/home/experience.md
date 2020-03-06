@@ -20,7 +20,7 @@ date_format = "Jan 2006"
 [[experience]]
   title = "Data Analyst - Vehicle Telematics and IoT Hardware"
   company = "Education Logistics"
-  company_url = "www.edulog.com"
+  company_url = "https://www.edulog.com/"
   location = "Montana"
   date_start = "2018-03-01"
   date_end = ""
