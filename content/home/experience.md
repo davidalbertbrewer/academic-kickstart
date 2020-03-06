@@ -18,27 +18,27 @@ date_format = "Jan 2006"
 #   Leave `date_end` empty if it's your current employer.
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 [[experience]]
-  title = "CEO"
-  company = "GenCoin"
-  company_url = ""
-  location = "California"
-  date_start = "2017-01-01"
+  title = "Data Analyst - Vehicle Telematics and IoT Hardware"
+  company = "Education Logistics"
+  company_url = "www.edulog.com"
+  location = "Montana"
+  date_start = "2018-03-01"
   date_end = ""
   description = """
   Responsibilities include:
   
-  * Analysing
-  * Modelling
-  * Deploying
+  * Providing access to data through reports and dashboards with business intelligence tools and Python applications
+  * Ad-hoc reporting and analytics for operations, inventory, consulting, and engineering teams
+  * Managing telematics projects through entire lifecycle, from proposal/scoping phase to gathering requirements, providing regular status updates, analyzing data, reporting key insights and lessons learned
   """
 
 [[experience]]
-  title = "Professor"
-  company = "University X"
+  title = "Graduate Assistant"
+  company = "University of Montana"
   company_url = ""
-  location = "California"
-  date_start = "2016-01-01"
-  date_end = "2016-12-31"
-  description = """Taught electronic engineering and researched semiconductor physics."""
+  location = "Montana"
+  date_start = "2016-08-01"
+  date_end = "2017-05-31"
+  description = """Worked with professors Shawn Clouse, Justin Angle, Jason Triche.  Involved in the undergraduate capstone course for the Big Data certificate final projects.  Lectures in the Introduction to Data Analytics undergraduate course specifically on business intelligence.  Assisted in the Introduction to Marketing including didgital marketing fundamentals."""
 
 +++
