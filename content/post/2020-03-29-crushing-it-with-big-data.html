@@ -31,15 +31,16 @@ The sessions were <strong>four hours long</strong>, including a snacktime :)
 <p>He taught how to <strong>code Python from the command line and <a href="https://docs.python.org/3/library/idle.html">IDLE</a></strong>….<br />
 <em>IDLE is that “GUI” Python installs “which has been bundled with the default implementation of the language since 1.5.2b1” according to the Wikipedia page.</em>
 <br>
-<img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/start-python-idle-in-windows.png" /></p>
+<img src="/start-python-idle-in-windows.png" /></p>
 <li>
 In addition to the <a href="https://www.amazon.com/Algorithms-Data-Science-Brian-Steele/dp/3319833731">textbook</a> John was writing, to begin each session we had a discussion of another book we were to read titled <a href="https://www.amazon.com/gp/product/0385347375/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&amp;psc=1">Dataclysm</a> written by arguably the most famous data scientist at the time, <a href="https://fivethirtyeight.com/features/christian-rudder-dataclysm-okcupid/">Christian Rudder</a>.<br />
 
 </ul>
-<blockquote>
-<strong>Thanks to John and Christian, from then on I was hooked on data.</strong>
-</blockquote>
-<p>So what better way to start this blog than to revisit an example from Dataclysm and the <a href="https://theblog.okcupid.com/the-big-lies-people-tell-in-online-dating-a9e3990d6ae2">OKCupid blog</a>.</p>
+<h3>
+Thanks to John and Christian, I was hooked on data.
+</h3>
+<p><br>
+So what better way to start this blog than to revisit an example from Dataclysm and the <a href="https://theblog.okcupid.com/the-big-lies-people-tell-in-online-dating-a9e3990d6ae2">OKCupid blog</a>.</p>
 Dataclysm is subtitled “Who We Are (When We Think No One’s Looking)” and this blog post titled “The Big Lies People Tell In Online Dating” explores a simple example of height.
 <br>
 <br>
@@ -57,27 +58,25 @@ The heights of U.S. men are normally distributed with a mean centered at about 5
 The dotted line shows the OKCupid heights follow a nearly-normal distribution…<strong>except the heights are shifted to the right about two inches</strong>.<br />
 
 </ul>
-<img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/male_height_distribution_on_okcupid.JPG" /><br />
-<br>
+<img src="/male_height_distribution_on_okcupid.JPG" /><br />
 This is explained by Christian in the quote and chart below:<br />
 
 <blockquote>
 “Almost universally guys like to add a couple inches to their height. You can also see a more subtle vanity at work: starting at roughly 5’ 8”, the top of the dotted curve tilts even further rightward. This means that guys as they get closer to six feet round up a bit more than usual, stretching for that coveted psychological benchmark."
 </blockquote>
-<img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/male_height_distribution_on_okcupid_2.JPG" /><br />
+<img src="/male_height_distribution_on_okcupid_2.JPG" /><br />
+<img src="/female_height_distribution_on_okcupid.png" />
+<h3>
+I wonder is Cristian’s claim always true? Or is this an anomaly within online dating website data?
+</h3>
+<img src="/height_exaggeration.jpg" />
 <br>
-<img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/female_height_distribution_on_okcupid.png" />
-<br>
-<br>
-<blockquote>
-<strong>I wonder is Cristian’s claim always true? Or is this an anomaly within online dating website data?</strong>
-<img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/height_exaggeration.jpg" />
-</blockquote>
 Personally I believe Christian’s theory based on my own physical height of 5’8" and my driver’s license height of 5’9". Not sure who I was trying to impress…<br />
 <br>
-<blockquote>
-<strong>As a data scientist I can more rigorously test this theory using an alternative dataset of self reported heights.</strong>
-</blockquote>
+<h3>
+As a data scientist I can more rigorously test this theory using an alternative dataset of self reported heights.
+</h3>
+<br>
 Here’s how the analysis will work:
 <ul>
 <li>
@@ -91,9 +90,10 @@ The resulting distribution can be comapred with both the actual reported height 
 </ul>
 As I quickly learned, having at least a practical understanding of statistics is crucial in data science (and calculus is usually hanging in the background, especially for machine learning). For the undergraduate level statistician, the normal distribution is a good place to start and for the purpose of this blog article, some basic definitions should be sufficient.<br />
 <br>
-<blockquote>
-<strong>Normal Distribution</strong>
-</blockquote>
+<h3>
+Normal Distribution
+</h3>
+<br>
 The normal distribution in probability theory is known as the Gaussian distribution:
 <ul>
 <li>
@@ -107,7 +107,7 @@ A random variable with a Gaussian distribution is “said to be normally distrib
 Here is the <a href="https://en.wikipedia.org/wiki/Probability_density_function">probability density function (PDF)</a>:<br />
 
 <blockquote>
-<img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/normal_distribution_probability_density_function.JPG" /><br />
+<img src="/normal_distribution_probability_density_function.JPG" /><br />
 <span class="math inline">\(\mu\)</span> is the mean of the distribution<br />
 <span class="math inline">\(\sigma\)</span> is the standard deviation<br />
 <span class="math inline">\(\sigma^2\)</span> is the variance
@@ -116,29 +116,29 @@ Here is the <a href="https://en.wikipedia.org/wiki/Probability_density_function"
 <a href="https://towardsdatascience.com/understanding-the-68-95-99-7-rule-for-a-normal-distribution-b7b7cbf760c2">This</a> article helps to understand the probability density function for a normal distribution in the context of the 68-95-99.7 Rule.<br />
 <br>
 <em>“A probability density function (PDF) is used to specify the probability of the random variable falling within a particular range of values, as opposed to taking on any one value. This probability is given by the <a href="https://en.wikipedia.org/wiki/Integral">integral</a> of this variable’s PDF over that range — that is, it is given by the area under the density function but above the horizontal axis and between the lowest and greatest values of the range.”</em><br />
-<img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/68-95-99-rule.png" /></p>
+<img src="/68-95-99-rule.png" /></p>
 <p>The PDF can be re-written this way:<br />
-<img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/normal_distribution_probability_density_function_2.JPG" /><br />
+<img src="/normal_distribution_probability_density_function_2.JPG" /><br />
 And then simplified assuming <span class="math inline">\(\mu\)</span> = 0 and <span class="math inline">\(\sigma\)</span> = 1<br />
-<img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/normal_distribution_probability_density_function_2_simplified.JPG" /><br />
-<br>
+<img src="/normal_distribution_probability_density_function_2_simplified.JPG" /><br />
 Here is how this looks coded in Python using numpy:</p>
 <pre><code>import numpy as np
 constant = 1.0 / np.sqrt(2*np.pi)
 pdf_normal_distribution = constant * np.exp((-x**2) / 2.0)</code></pre>
 So this is what is going on under the hood of the dnorm function in R which I will use below to complete this analysis.<br />
 <br>
-<blockquote>
-<strong>Now back to the data</strong>
-</blockquote>
+<h3>
+Now back to the data
+</h3>
+<br>
 First, finding a dataset of actual measured heights in the U.S. is harder than I expected….if you have a source please let me know. Likely there are volumes of height/weight data available in medical records, but hidden behind HIPAA.<br />
 <br>
 <blockquote>
-<em>I did discover an interesting longitudinal dataset of heights across nearly 100 countries collected by the DHS Program and made available on their website <a href="https://www.dhsprogram.com/What-We-Do/survey-search.cfm?pgtype=main&amp;SrvyTp=country">here</a> but unfortunately the U.S. is not included in these data.</em>
+<em>I discovered an interesting longitudinal dataset of heights across nearly 100 countries collected by the DHS Program and made available on their website <a href="https://www.dhsprogram.com/What-We-Do/survey-search.cfm?pgtype=main&amp;SrvyTp=country">here</a> but unfortunately the U.S. is not included in these data.</em>
 </blockquote>
 <p>So for now I will just skip finding actual height data and assume Christian’s source is good.</p>
 <p>Unfortunately I don’t own a successful nationwide dating site with a database I can mine to satisfy my own curiosity, so I needed to find a publicly available dataset of self reported heights.</p>
-I found such a source in the CDC’s national survey via the <a href="https://www.cdc.gov/brfss/about/index.htm">Behavioral Risk Factor Surveillance System (BRFSS)</a>.<br />
+<strong>I found such a source in the CDC’s national survey via the <a href="https://www.cdc.gov/brfss/about/index.htm">Behavioral Risk Factor Surveillance System (BRFSS)</a>.</strong><br />
 
 <ul>
 <li>
@@ -149,21 +149,21 @@ I made the Rdata file available <a href="https://daves-data.s3-us-west-2.amazona
 </ul>
 When reporting heights during the BRFSS questionnaire we might expect respondents to have less incentive to ‘stretch’ the truth because the height information will only be used as part of this anonymous survey rather than posted on an online dating profile like OKCupid heights.<br />
 <br>
-<blockquote>
-<p><strong>I used R to run the analysis and posted the code below, but here are the resulting visualizations.</strong></p>
-<strong>It appears this theory holds true, even in anonymized health survey studies. When height is self reported people tend to exaggerate an inch or two.</strong>
-</blockquote>
-<p><img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/male-height-dist-brfss.png" />
-<img src="C:/Users/dbrewer/PROJECTS/academic-kickstart/static/img/female-height-dist-brfss.png" /></p>
-<br>
-<blockquote>
-<strong>R Code for BRFSS Height Analysis</strong>
-</blockquote>
-<p><br>
-<strong>Filtering the dataframe to the height and gender fields of interest</strong></p>
+<h3>
+I used R to run the analysis and posted the code below, but here are the resulting visualizations.
+</h3>
+<h3>
+It appears this theory holds true, even in anonymized health survey studies. When height is self reported people tend to exaggerate an inch or two.
+</h3>
+<img src="/male-height-dist-brfss.png" />
+<img src="/female-height-dist-brfss.png" />
+<h3>
+R Code for BRFSS Height Analysis
+</h3>
+<p><br></p>
+<p><strong>Filtering the dataframe to the height and gender fields of interest</strong></p>
 <pre class="r"><code>heights_df &lt;- data.frame(heights3 = brfss2013$height3
                          , sex = brfss2013$sex)</code></pre>
-<br>
 <strong>The height field requires some data wrangling</strong>
 <ul>
 <li>
@@ -193,9 +193,9 @@ heights_df$total_inches &lt;- (heights_df$feet * 12) + heights_df$inches
 
 #I will also need a formatted variable for heights
 # so my height of 68 inches would be 5&#39;8&quot;
-heights_df$label &lt;- paste(heights_df$feet, &quot;\&#39;&quot;, heights_df$inches, &quot;\&quot;&quot;, sep=&quot;&quot;)</code></pre>
-<p><br>
-<strong>Summary statistics for the total_inches variable</strong></p>
+heights_df$label &lt;- paste(heights_df$feet, &quot;\&#39;&quot;
+                          , heights_df$inches, &quot;\&quot;&quot;, sep=&quot;&quot;)</code></pre>
+<p><strong>Summary statistics for the total_inches variable</strong></p>
 <pre class="r"><code>heights_df_summary &lt;- heights_df %&gt;%
         group_by(sex) %&gt;%
         summarize(mean = mean(total_inches)
@@ -206,7 +206,6 @@ add_row &lt;- heights_df %&gt;%
         mutate(sex=&quot;both&quot;) %&gt;%
         select(sex, mean, sd)
 heights_df_summary &lt;- rbind(heights_df_summary, add_row)</code></pre>
-<p><br></p>
 <table>
 <caption><span id="tab:heights-df-summary-statistics-table">Table 1: </span>Mean and standard deviation for ‘total_inches’</caption>
 <thead>
@@ -234,8 +233,6 @@ heights_df_summary &lt;- rbind(heights_df_summary, add_row)</code></pre>
 </tr>
 </tbody>
 </table>
-<br>
-<br>
 <strong>Creating a similar analysis with the actual reported heights compared to the expected normal distribution given the mean and standard deviation of the sample</strong>
 <ul>
 <li>
@@ -260,8 +257,7 @@ for(n in 1:length(unique(heights_df$sex))){
         add_row$sex &lt;- sex_for_analysis
         add_row$percent &lt;- add_row$count / sum(add_row$count)
         heights_df_table_by_label &lt;- rbind(heights_df_table_by_label, add_row)}</code></pre>
-<p><br>
-<strong>First look at the heights of males</strong></p>
+<p><strong>First look at the heights of males</strong></p>
 <pre class="r"><code>#Filter the analysis for males
 sex_for_analysis &lt;- &quot;Male&quot;
 heights_df_table_by_label_merged &lt;- merge(heights_df_table_by_label
@@ -274,7 +270,6 @@ df$percent &lt;- round(df$percent*100, 0)
 df &lt;- df[order(df$total_inches), ]
 df &lt;- df[df$total_inches &gt; 54
          &amp; df$total_inches &lt; 84,]</code></pre>
-<br>
 <strong>Generate expected height data given a normal distribution</strong>
 <ul>
 <li>
@@ -300,7 +295,6 @@ add_row &lt;- data.frame(total_inches = xseq
 add_row &lt;- merge(add_row, heights_label_merge, by = &quot;total_inches&quot;)
 add_row$percent &lt;- round(add_row$percent*100, 0)
 df_test &lt;- rbind(df_test, add_row)</code></pre>
-<br>
 <strong>Generate U.S. height data given a normal distribution from OKCupid chart</strong>
 <ul>
 <li>
@@ -321,8 +315,7 @@ add_row &lt;- data.frame(total_inches = xseq
 add_row &lt;- merge(add_row, heights_label_merge, by = &quot;total_inches&quot;)
 add_row$percent &lt;- round(add_row$percent*100, 0)
 df_test &lt;- rbind(df_test, add_row)</code></pre>
-<br>
-<strong>ggplot2 to create the viz similar to OKCupid theme</strong>
+<strong>Use ggplot2 to create the viz similar to OKCupid theme</strong>
 <ul>
 <li>
 Matching the theme took some time.
@@ -380,11 +373,10 @@ ggplot(data = subset(df_test, cond == &quot;dnorm&quot;)
                , colour=guide_legend(keywidth = 3, keyheight = 1)) +
         ggtitle(&quot;Male Height Distribution in BRFSS 2013 Dataset&quot;)</code></pre>
 <img src="/post/2020-03-29-crushing-it-with-big-data_files/figure-html/plot-male-heights-1.png" width="672" />
+<h3>
+Examine results
+</h3>
 <br>
-<br>
-<blockquote>
-<strong>Examine the results</strong>
-</blockquote>
 <ul>
 <li>
 There is a similar skewed distribution from the survey responses starting at 5’8" however in this dataset there is a more extreme exaggeration to claim a height of 5’10" as well as the desired 6’0" height.<br />
@@ -395,16 +387,15 @@ Similar to OKCupid, fewer men report being 5’11" than expected, which tends to
 It appears if I were to create three nice smooth curves using the dnorm function, my results would appear very close to that of OKCupid, so I believe the visualization Chritstian created was done this way to be more visually appealing.
 </ul>
 <br>
-<br>
-<blockquote>
-<strong>Now look at the heights of females</strong>
-</blockquote>
+<h3>
+Now look at the heights of females
+</h3>
+<p><br></p>
 <img src="/post/2020-03-29-crushing-it-with-big-data_files/figure-html/plot-female-heights-1.png" width="672" />
+<h3>
+Examine results
+</h3>
 <br>
-<br>
-<blockquote>
-<strong>Examine the results</strong>
-</blockquote>
 <ul>
 <li>
 There is a similar skewed distribution from the survey responses for women, typically about one to two inches.<br />
