@@ -67,7 +67,7 @@ This is explained by Christian in the quote and chart below:<br />
 <img src="/male_height_distribution_on_okcupid_2.JPG" /><br />
 <img src="/female_height_distribution_on_okcupid.png" />
 <h3>
-I wonder is Cristian’s claim always true? Or is this an anomaly within online dating website data?
+I wonder is Christian’s claim always true? Or is this an anomaly within online dating website data?
 </h3>
 <img src="/height_exaggeration.jpg" />
 <br>
@@ -125,14 +125,14 @@ Here is how this looks coded in Python using numpy:</p>
 <pre><code>import numpy as np
 constant = 1.0 / np.sqrt(2*np.pi)
 pdf_normal_distribution = constant * np.exp((-x**2) / 2.0)</code></pre>
-So this is what is going on under the hood of the dnorm function in R which I will use below to complete this analysis.<br />
+Basically this is what is going on under the hood of the <code>dnorm</code> function in R which I will use below to complete this analysis.<br />
 <br>
 <h3>
 Now back to the data
 </h3>
 <br>
 First, finding a dataset of actual measured heights in the U.S. is harder than I expected….if you have a source please let me know. Likely there are volumes of height/weight data available in medical records, but hidden behind HIPAA.<br />
-<br>
+
 <blockquote>
 <em>I discovered an interesting longitudinal dataset of heights across nearly 100 countries collected by the DHS Program and made available on their website <a href="https://www.dhsprogram.com/What-We-Do/survey-search.cfm?pgtype=main&amp;SrvyTp=country">here</a> but unfortunately the U.S. is not included in these data.</em>
 </blockquote>
@@ -147,7 +147,9 @@ I loaded the dataset from the 2013 survey which includes heights from over 400K 
 I made the Rdata file available <a href="https://daves-data.s3-us-west-2.amazonaws.com/brfss2013.RData">here</a>.<br />
 
 </ul>
-When reporting heights during the BRFSS questionnaire we might expect respondents to have less incentive to ‘stretch’ the truth because the height information will only be used as part of this anonymous survey rather than posted on an online dating profile like OKCupid heights.<br />
+<blockquote>
+When reporting heights during the BRFSS questionnaire we might expect respondents to have less incentive to ‘stretch’ the truth because the height information will only be used as part of this anonymous survey rather than posted on an online dating profile like OKCupid heights.
+</blockquote>
 <br>
 <h3>
 I used R to run the analysis and posted the code below, but here are the resulting visualizations.
@@ -233,7 +235,7 @@ heights_df_summary &lt;- rbind(heights_df_summary, add_row)</code></pre>
 </tr>
 </tbody>
 </table>
-<strong>Creating a similar analysis with the actual reported heights compared to the expected normal distribution given the mean and standard deviation of the sample</strong>
+<strong>Creating a similar analysis with actual reported heights compared to the expected normal distribution of heights given the mean and standard deviation of the sample</strong>
 <ul>
 <li>
 Create a dataframe with each height (orunded to the nearest inch)
@@ -265,7 +267,9 @@ heights_df_table_by_label_merged &lt;- merge(heights_df_table_by_label
                                           , by = &quot;label&quot;)
 
 #Create a dataframe with the actual data to be used for the plot
-df &lt;- heights_df_table_by_label_merged[heights_df_table_by_label_merged$sex == sex_for_analysis,]
+df &lt;- 
+  heights_df_table_by_label_merged[
+    heights_df_table_by_label_merged$sex == sex_for_analysis,]
 df$percent &lt;- round(df$percent*100, 0)
 df &lt;- df[order(df$total_inches), ]
 df &lt;- df[df$total_inches &gt; 54
@@ -283,8 +287,10 @@ Use dnorm function to generate the percentages of the sample <strong>expected fo
 df_test &lt;- df[c(&quot;total_inches&quot;, &quot;percent&quot;, &quot;label&quot;)]
 df_test$cond &lt;- &quot;actual&quot;
 set.seed(1983)
-mean &lt;- as.numeric(heights_df_summary[heights_df_summary$sex == sex_for_analysis, &quot;mean&quot;])
-sd &lt;- as.numeric(heights_df_summary[heights_df_summary$sex == sex_for_analysis, &quot;sd&quot;])
+mean &lt;- as.numeric(
+  heights_df_summary[heights_df_summary$sex == sex_for_analysis, &quot;mean&quot;])
+sd &lt;- as.numeric(
+  heights_df_summary[heights_df_summary$sex == sex_for_analysis, &quot;sd&quot;])
 xseq&lt;-seq(55,83,1)
 densities&lt;-dnorm(xseq
                  , mean = mean
@@ -353,9 +359,11 @@ ggplot(data = subset(df_test, cond == &quot;dnorm&quot;)
                            , labels=c(&quot;BRFSS&quot;, &quot;BRFSS Implied&quot;, &quot;U.S.&quot;)) +
         scale_x_discrete(name =&quot;&quot;
                          , breaks = df_test$label[seq(0,length(df$label),2)]
-                         , labels = as.character(df_test$label[seq(0,length(df$label),2)])
+                         , labels = as.character(
+                           df_test$label[seq(0,length(df$label),2)])
                          , limits = df_test$label[df_test$cond== &quot;dnorm&quot;]) +
-        scale_y_continuous(breaks=seq(min(df_test$percent),max(df_test$percent),4)
+        scale_y_continuous(breaks=seq(min(df_test$percent)
+                                      ,max(df_test$percent),4)
                            , labels = function(x) paste0(x, &quot;%&quot;)) +
         theme(axis.text.x = element_text(angle=90, colour = &quot;black&quot;)
               , axis.title.y=element_blank()
