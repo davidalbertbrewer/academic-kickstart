@@ -18,7 +18,7 @@ organizations:
   url: "https://www.umt.edu/study/data-science"
 
 # Short bio (displayed in user profile at end of posts)
-bio: My work and interestes are at the intersection of business, statistics, computing, data analysis, and data modeling.
+bio: My work and interests are at the intersection of business, statistics, computing, data analysis, and data modeling.
 
 interests:
 - Data Analytics
