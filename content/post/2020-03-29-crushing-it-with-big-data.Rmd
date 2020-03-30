@@ -1,0 +1,503 @@
+---
+title: Crushing I.T. with Big Data
+author: David Brewer
+date: '2020-03-29'
+slug: crushing-it-with-big-data
+categories:
+  - Statistics
+tags:
+  - R
+  - Statistics
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-03-29T17:54:22-06:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+In Feb. 2015, I was an undergraduate student at the University of Montana and I signed up for a five week seminar course taught by [John Chandler](https://www.linkedin.com/in/johncp/) called "Crushing I.T. with Big Data"....*pun intended.*  
+<br>
+<ul>
+<li>The sessions were **four hours long**, including a snacktime :) 
+<li>He taught how to **code Python from the command line and [IDLE](https://docs.python.org/3/library/idle.html)**....  
+*IDLE is that "GUI" Python installs "which has been bundled with the default implementation of the language since 1.5.2b1" according to the Wikipedia page.*
+<br>
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\start-python-idle-in-windows.png)
+
+
+<li>In addition to the [textbook](https://www.amazon.com/Algorithms-Data-Science-Brian-Steele/dp/3319833731) John was writing, to begin each session we had a discussion of another book we were to read titled [Dataclysm](https://www.amazon.com/gp/product/0385347375/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) written by arguably the most famous data scientist at the time, [Christian Rudder](https://fivethirtyeight.com/features/christian-rudder-dataclysm-okcupid/).  
+</ul>
+<blockquote>
+**Thanks to John and Christian, from then on I was hooked on data.**
+</blockquote>
+So what better way to start this blog than to revisit an example from Dataclysm and the [OKCupid blog](https://theblog.okcupid.com/the-big-lies-people-tell-in-online-dating-a9e3990d6ae2).  
+  
+Dataclysm is subtitled  "Who We Are (When We Think No One's Looking)" and this blog post titled "The Big Lies People Tell In Online Dating" explores a simple example of height. 
+<br>
+<br>
+<blockquote>
+**"I'm 6 feet tall"**  
+**REALITY:  People are two inches shorter**  
+</blockquote>
+The chart below shows the heights of men reported on OKCupid and the heights of men in the U.S. in general (no source given).  
+<ul>
+<li>The heights of U.S. men are normally distributed with a mean centered at about 5'9".  
+<li>The dotted line shows the OKCupid heights follow a nearly-normal distribution...**except the heights are shifted to the right about two inches**.  
+</ul>
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\male_height_distribution_on_okcupid.JPG)  
+<br>
+This is explained by Christian in the quote and chart below:  
+<blockquote>
+"Almost universally guys like to add a couple inches to their height. You can also see a more subtle vanity at work: starting at roughly 5' 8", the top of the dotted curve tilts even further rightward. This means that guys as they get closer to six feet round up a bit more than usual, stretching for that coveted psychological benchmark."
+</blockquote>
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\male_height_distribution_on_okcupid_2.JPG)  
+<br>
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\female_height_distribution_on_okcupid.png) 
+<br>
+<br>
+<blockquote>
+**I wonder is Cristian's claim always true?  Or is this an anomaly within online dating website data?**
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\height_exaggeration.jpg) 
+</blockquote>
+Personally I believe Christian's theory based on my own physical height of 5'8" and my driver's license height of 5'9".  Not sure who I was trying to impress...  
+<br>
+<blockquote>
+**As a data scientist I can more rigorously test this theory using an alternative dataset of self reported heights.** 
+</blockquote>
+Here's how the analysis will work:
+<ul>
+<li>We can assume human height follows the normal distribution.  
+*Thanks to [Galton's data](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/T0HSJ1) we know that height is not entirely determined by hereditary genetics...but that's a topic deserving a blog post of its own since this is where the term "regression" originates from.*
+<li>With this assumption in mind I can use the dnorm function in R and the underlying probability distribution function.  
+<li>The resulting distribution can be comapred with both the actual reported height distribution as well as the U.S. height distribution.
+</ul>
+
+As I quickly learned, having at least a practical understanding of statistics is crucial in data science (and calculus is usually hanging in the background, especially for machine learning).  For the undergraduate level statistician, the normal distribution is a good place to start and for the purpose of this blog article, some basic definitions should be sufficient.  
+<br>
+<blockquote>
+**Normal Distribution** 
+</blockquote>
+The normal distribution in probability theory is known as the Gaussian distribution:
+<ul>
+<li>Common [continuous probability distribution](https://en.wikipedia.org/wiki/Probability_distribution#Continuous_probability_distribution) are "scenarios where the set of possible outcomes can take on values in a continuous range, like temperature" or in this case height; compared to discrete probability distributions like a coin toss or gender.
+<li>Distribution of a real-valued [random variable](https://en.wikipedia.org/wiki/Random_variable), which means the "value of the variable depends on the outcome of a random phenomenon."
+<li>A random variable with a Gaussian distribution is "said to be normally distributed and is called a normal deviate."
+</ul>
+<br>
+Here is the [probability density function (PDF)](https://en.wikipedia.org/wiki/Probability_density_function):  
+<blockquote>
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\normal_distribution_probability_density_function.JPG)  
+$\mu$ is the mean of the distribution  
+$\sigma$ is the standard deviation  
+$\sigma^2$ is the variance  
+</blockquote>
+<br>
+[This](https://towardsdatascience.com/understanding-the-68-95-99-7-rule-for-a-normal-distribution-b7b7cbf760c2) article helps to understand the probability density function for a normal distribution in the context of the 68-95-99.7 Rule.  
+<br>
+*"A probability density function (PDF) is used to specify the probability of the random variable falling within a particular range of values, as opposed to taking on any one value. This probability is given by the [integral](https://en.wikipedia.org/wiki/Integral) of this variable’s PDF over that range — that is, it is given by the area under the density function but above the horizontal axis and between the lowest and greatest values of the range."*  
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\68-95-99-rule.png)
+
+
+The PDF can be re-written this way:  
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\normal_distribution_probability_density_function_2.JPG)  
+And then simplified assuming $\mu$ = 0 and $\sigma$ = 1   
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\normal_distribution_probability_density_function_2_simplified.JPG)  
+<br>
+Here is how this looks coded in Python using numpy:
+```
+import numpy as np
+constant = 1.0 / np.sqrt(2*np.pi)
+pdf_normal_distribution = constant * np.exp((-x**2) / 2.0)
+```
+  
+So this is what is going on under the hood of the dnorm function in R which I will use below to complete this analysis.  
+<br>
+<blockquote>
+**Now back to the data**
+</blockquote>
+First, finding a dataset of actual measured heights in the U.S. is harder than I expected....if you have a source please let me know. Likely there are volumes of height/weight data available in medical records, but hidden behind HIPAA.  
+<br>
+<blockquote>
+*I did discover an interesting longitudinal dataset of heights across nearly 100 countries collected by the DHS Program and made available on their website [here](https://www.dhsprogram.com/What-We-Do/survey-search.cfm?pgtype=main&SrvyTp=country) but unfortunately the U.S. is not included in these data.*
+</blockquote>
+So for now I will just skip finding actual height data and assume Christian's source is good.  
+
+Unfortunately I don't own a successful nationwide dating site with a database I can mine to satisfy my own curiosity, so I needed to find a publicly available dataset of self reported heights.  
+
+I found such a source in the CDC's national survey via the [Behavioral Risk Factor Surveillance System (BRFSS)](https://www.cdc.gov/brfss/about/index.htm).  
+<ul>
+<li>I loaded the dataset from the 2013 survey which includes heights from over 400K respondents.
+<li> I made the Rdata file available [here](https://daves-data.s3-us-west-2.amazonaws.com/brfss2013.RData).  
+</ul>
+
+When reporting heights during the BRFSS questionnaire we might expect respondents to have less incentive to 'stretch' the truth because the height information will only be used as part of this anonymous survey rather than posted on an online dating profile like OKCupid heights.  
+<br>
+<blockquote>
+**I used R to run the analysis and posted the code below, but here are the resulting visualizations.**  
+
+**It appears this theory holds true, even in anonymized health survey studies.  When height is self reported people tend to exaggerate an inch or two.**
+</blockquote>
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\male-height-dist-brfss.png)
+![](C:\Users\dbrewer\PROJECTS\academic-kickstart\static\img\female-height-dist-brfss.png)
+
+<br>
+<blockquote>
+**R Code for BRFSS Height Analysis**
+</blockquote>
+```{r load-packages, message = FALSE, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+library(knitr)
+```
+
+```{r load-data, echo=FALSE}
+load("C:/Users/dbrewer/CODE/StatsWithR/DATA/BRFSS/brfss2013.RData")
+```
+<br>
+**Filtering the dataframe to the height and gender fields of interest**
+```{r heights-df}
+heights_df <- data.frame(heights3 = brfss2013$height3
+                         , sex = brfss2013$sex)
+
+```
+<br>
+**The height field requires some data wrangling**
+<ul>
+<li>Removing the metric measurements (most of the respondents report in feet and inches)
+<li>Creating a single numeric variable for each height in total inches rather then feet and inches
+<li>Create a nicely formatted character variable for plotting heights in feet and inches, i.e. 5'9"
+</ul>
+```{r clean-heights}
+#remove missing values
+heights_df <- heights_df %>%
+        na.omit()
+
+#remove the metric measurements
+heights_df <- 
+        heights_df[heights_df$heights3 <= 9000,]
+
+#create a total_inches numeric variable for analysis
+heights_df <- data.frame(sex = heights_df$sex
+                         , heights3 = heights_df$heights3
+                         , feet = substring(heights_df$heights3, 0, 1)
+                         , inches = substring(heights_df$heights3, 2, 3)
+                         , stringsAsFactors = FALSE)
+heights_df$feet <- as.numeric(heights_df$feet)
+heights_df$inches <- as.numeric(heights_df$inches)
+heights_df$total_inches <- (heights_df$feet * 12) + heights_df$inches
+
+#I will also need a formatted variable for heights
+# so my height of 68 inches would be 5'8"
+heights_df$label <- paste(heights_df$feet, "\'", heights_df$inches, "\"", sep="")
+```
+<br>
+**Summary statistics for the total_inches variable**
+```{r heights-df-summary-statistics}
+heights_df_summary <- heights_df %>%
+        group_by(sex) %>%
+        summarize(mean = mean(total_inches)
+                  , sd = sd(total_inches))
+add_row <- heights_df %>%
+        summarize(mean = mean(total_inches)
+                  , sd = sd(total_inches)) %>%
+        mutate(sex="both") %>%
+        select(sex, mean, sd)
+heights_df_summary <- rbind(heights_df_summary, add_row)
+```
+<br>
+```{r heights-df-summary-statistics-table, echo=FALSE}
+kable(heights_df_summary
+               , caption = "Mean and standard deviation for 'total_inches'"
+               , floating.environment="sidewaystable"
+               , align = 'l'
+               , row.names = FALSE)
+```
+```{r echo=FALSE}
+```
+<br>
+<br>
+**Creating a similar analysis with the actual reported heights compared to the expected normal distribution given the mean and standard deviation of the sample**
+<ul>
+<li>Create a dataframe with each height (orunded to the nearest inch)
+<li>Calculate the percent of respondents for each height
+<li>Run this inside a loop for each gender (in this case just male/female)
+</ul>
+```{r heights-percent}
+#Calculate the percent of the sample for each height seperated by gender
+heights_label_merge <- data.frame(total_inches = heights_df$total_inches
+                                  , label = heights_df$label)
+heights_label_merge <- unique.data.frame(heights_label_merge)
+heights_df_table_by_label <- data.frame(label = character(0)
+                                        , count = numeric(0)
+                                        , percent = numeric(0))
+for(n in 1:length(unique(heights_df$sex))){
+        sex_for_analysis <- unique(heights_df$sex)[n]
+        heights_df_filtered <- heights_df[heights_df$sex == sex_for_analysis,]
+        add_row <- as.data.frame(table(heights_df_filtered$label))
+        names(add_row) <- c("label", "count")
+        add_row$sex <- sex_for_analysis
+        add_row$percent <- add_row$count / sum(add_row$count)
+        heights_df_table_by_label <- rbind(heights_df_table_by_label, add_row)}
+```
+<br>
+**First look at the heights of males**
+```{r filter-males}
+#Filter the analysis for males
+sex_for_analysis <- "Male"
+heights_df_table_by_label_merged <- merge(heights_df_table_by_label
+                                          , heights_label_merge
+                                          , by = "label")
+
+#Create a dataframe with the actual data to be used for the plot
+df <- heights_df_table_by_label_merged[heights_df_table_by_label_merged$sex == sex_for_analysis,]
+df$percent <- round(df$percent*100, 0)
+df <- df[order(df$total_inches), ]
+df <- df[df$total_inches > 54
+         & df$total_inches < 84,]
+```
+<br>
+**Generate expected height data given a normal distribution**
+<ul>
+<li>Set seed for reproducible results
+<li>Find the mean and standard deviation of the sample heights
+<li>Use dnorm function to generate the percentages of the sample **expected for each height** 
+</ul>
+```{r expected-normal-data-male}
+#create a dataframe with the expected data given a normal distribution
+df_test <- df[c("total_inches", "percent", "label")]
+df_test$cond <- "actual"
+set.seed(1983)
+mean <- as.numeric(heights_df_summary[heights_df_summary$sex == sex_for_analysis, "mean"])
+sd <- as.numeric(heights_df_summary[heights_df_summary$sex == sex_for_analysis, "sd"])
+xseq<-seq(55,83,1)
+densities<-dnorm(xseq
+                 , mean = mean
+                 , sd = sd)
+add_row <- data.frame(total_inches = xseq
+                      , percent = densities
+                      , cond = "dnorm")
+add_row <- merge(add_row, heights_label_merge, by = "total_inches")
+add_row$percent <- round(add_row$percent*100, 0)
+df_test <- rbind(df_test, add_row)
+```
+<br>
+**Generate U.S. height data given a normal distribution from OKCupid chart**
+<ul>
+<li>Mean ~5'9"
+<li>Standard deviation ~3"
+</ul>
+```{r generate-us-height-male}
+
+set.seed(1983)
+mean <- 69
+sd <- 3
+xseq<-seq(55,83,1)
+densities<-dnorm(xseq
+                 , mean = mean
+                 , sd = sd)
+add_row <- data.frame(total_inches = xseq
+                      , percent = densities
+                      , cond = "us_men")
+add_row <- merge(add_row, heights_label_merge, by = "total_inches")
+add_row$percent <- round(add_row$percent*100, 0)
+df_test <- rbind(df_test, add_row)
+
+```
+<br>
+**ggplot2 to create the viz similar to OKCupid theme**
+<ul>
+<li>Matching the theme took some time.
+<li>Colors are the same except I used black instead of the dotted purple.
+<li>The linetype legend is tricky and doesn't quite work in my code here.
+<li>Also I did not make the curves as smooth as in the OKCupid blog charts because the heights in the data are rounded to the nearest inch, but this could be accomplished by interpolation.
+</ul>
+```{r plot-male-heights}
+#create the plot
+ggplot(data = subset(df_test, cond == "dnorm")
+       , aes(x=label, y=percent, group = 1, colour = cond)) +
+        geom_point(data = subset(df_test, cond == "dnorm")
+               , aes(x=label, y=percent)
+               , size=1) +
+        geom_line(col="purple"
+                  , size=1) +
+        geom_point(data = subset(df_test, cond == "actual")
+                   , aes(x=label, y=percent)
+                   , size=.5) +
+        geom_line(data = subset(df_test, cond == "actual")
+                 , aes(x=label, y=percent)
+                 , col="black"
+                 , linetype="dotted"
+                 , size=.5) +
+        geom_point(data = subset(df_test, cond == "us_men")
+                 , aes(x=label, y=percent)
+                 , size=1) +
+        geom_line(data = subset(df_test, cond == "us_men")
+                   , aes(x=label, y=percent)
+                  , col="dark grey") +
+        scale_color_manual(values = c("black", "purple", "dark grey")
+                           , name=""
+                           , labels=c("BRFSS", "BRFSS Implied", "U.S.")) +
+        scale_x_discrete(name =""
+                         , breaks = df_test$label[seq(0,length(df$label),2)]
+                         , labels = as.character(df_test$label[seq(0,length(df$label),2)])
+                         , limits = df_test$label[df_test$cond== "dnorm"]) +
+        scale_y_continuous(breaks=seq(min(df_test$percent),max(df_test$percent),4)
+                           , labels = function(x) paste0(x, "%")) +
+        theme(axis.text.x = element_text(angle=90, colour = "black")
+              , axis.title.y=element_blank()
+              , axis.text.y = element_text(colour = "black")
+              , panel.background = element_rect(fill = "white",
+                                colour = "white")
+              , axis.line = element_line(size = 0.5, linetype = "solid",
+                                   colour = "grey")
+              , legend.direction = "vertical"
+              , legend.position = "right"
+              , legend.key = element_blank(), 
+              legend.background = element_rect(fill = "white"
+                                               , colour = "white")) +
+        guides(linetype=guide_legend(keywidth = 3, keyheight = 1)
+               , colour=guide_legend(keywidth = 3, keyheight = 1)) +
+        ggtitle("Male Height Distribution in BRFSS 2013 Dataset")
+        
+
+```
+<br>
+<br>
+<blockquote>
+**Examine the results**
+</blockquote>
+<ul>
+<li>There is a similar skewed distribution from the survey responses starting at 5'8" however in this dataset there is a more extreme exaggeration to claim a height of 5'10" as well as the desired 6'0" height.  
+<li>Similar to OKCupid, fewer men report being 5'11" than expected, which tends to indicate that men who are actually 5'11" report being 6' and those in the 5'8"-5'9" range tend to report 5'10" more than 5'11".
+<li>It appears if I were to create three nice smooth curves using the dnorm function, my results would appear very close to that of OKCupid, so I believe the visualization Chritstian created was done this way to be more visually appealing.
+</ul>
+
+
+
+<br>
+<br>
+<blockquote>
+**Now look at the heights of females**
+</blockquote>
+```{r filter-females, echo=FALSE}
+#Filter the analysis for males
+sex_for_analysis <- "Female"
+heights_df_table_by_label_merged <- merge(heights_df_table_by_label
+                                          , heights_label_merge
+                                          , by = "label")
+
+#Create a dataframe with the actual data to be used for the plot
+df <- heights_df_table_by_label_merged[heights_df_table_by_label_merged$sex == sex_for_analysis,]
+df$percent <- round(df$percent*100, 0)
+df <- df[order(df$total_inches), ]
+df <- df[df$total_inches > 46
+         & df$total_inches < 84,]
+```
+
+```{r expected-normal-data-female, echo=FALSE}
+#create a dataframe with the expected data given a normal distribution
+df_test <- df[c("total_inches", "percent", "label")]
+df_test$cond <- "actual"
+set.seed(1983)
+mean <- as.numeric(heights_df_summary[heights_df_summary$sex == sex_for_analysis, "mean"])
+sd <- as.numeric(heights_df_summary[heights_df_summary$sex == sex_for_analysis, "sd"])
+xseq<-seq(46,83,1)
+densities<-dnorm(xseq
+                 , mean = mean
+                 , sd = sd)
+add_row <- data.frame(total_inches = xseq
+                      , percent = densities
+                      , cond = "dnorm")
+add_row <- merge(add_row, heights_label_merge, by = "total_inches")
+add_row$percent <- round(add_row$percent*100, 0)
+df_test <- rbind(df_test, add_row)
+```
+
+```{r generate-us-height-female, echo=FALSE}
+
+set.seed(1983)
+mean <- 63
+sd <- 3
+xseq<-seq(46,83,1)
+densities<-dnorm(xseq
+                 , mean = mean
+                 , sd = sd)
+add_row <- data.frame(total_inches = xseq
+                      , percent = densities
+                      , cond = "us_women")
+add_row <- merge(add_row, heights_label_merge, by = "total_inches")
+add_row$percent <- round(add_row$percent*100, 0)
+df_test <- rbind(df_test, add_row)
+
+```
+
+```{r plot-female-heights, echo=FALSE}
+#create the plot
+ggplot(data = subset(df_test, cond == "dnorm")
+       , aes(x=label, y=percent, group = 1, colour = cond)) +
+        geom_point(data = subset(df_test, cond == "dnorm")
+               , aes(x=label, y=percent)
+               , size=1) +
+        geom_line(col="purple"
+                  , size=1) +
+        geom_point(data = subset(df_test, cond == "actual")
+                   , aes(x=label, y=percent)
+                   , size=.5) +
+        geom_line(data = subset(df_test, cond == "actual")
+                 , aes(x=label, y=percent)
+                 , col="black"
+                 , linetype="dotted"
+                 , size=.5) +
+        geom_point(data = subset(df_test, cond == "us_women")
+                 , aes(x=label, y=percent)
+                 , size=1) +
+        geom_line(data = subset(df_test, cond == "us_women")
+                   , aes(x=label, y=percent)
+                  , col="dark grey") +
+        scale_color_manual(values = c("black", "purple", "dark grey")
+                           , name=""
+                           , labels=c("BRFSS", "BRFSS Implied", "U.S.")) +
+        scale_x_discrete(name =""
+                         , breaks = df_test$label[seq(0,length(df$label),2)]
+                         , labels = as.character(df_test$label[seq(0,length(df$label),2)])
+                         , limits = df_test$label[df_test$cond== "dnorm"]) +
+        scale_y_continuous(breaks=seq(min(df_test$percent),max(df_test$percent),4)
+                           , labels = function(x) paste0(x, "%")) +
+        theme(axis.text.x = element_text(angle=90, colour = "black")
+              , axis.title.y=element_blank()
+              , axis.text.y = element_text(colour = "black")
+              , panel.background = element_rect(fill = "white",
+                                colour = "white")
+              , axis.line = element_line(size = 0.5, linetype = "solid",
+                                   colour = "grey")
+              , legend.direction = "vertical"
+              , legend.position = "right"
+              , legend.key = element_blank(), 
+              legend.background = element_rect(fill = "white"
+                                               , colour = "white")) +
+        guides(linetype=guide_legend(keywidth = 3, keyheight = 1)
+               , colour=guide_legend(keywidth = 3, keyheight = 1)) +
+        ggtitle("Female Height Distribution in BRFSS 2013 Dataset")
+        
+
+```
+<br>
+<br>
+<blockquote>
+**Examine the results**
+</blockquote>
+<ul>
+<li>There is a similar skewed distribution from the survey responses for women, typically about one to two inches.  
+<li>For women, the BRFSS reported heights more closely follow the expected distribution compared to men except around 5'4"-5'5" where this sample has a bit higher density than the overall U.S. female population.
+</ul>
+<br>
+For more information check out the OKCupid blog or buy the book Dataclysm (also available on Audible).
+<br>
+<blockquote>
+*Thanks,*  
+*DAVE*
+</blockquote>
