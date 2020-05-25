@@ -1,0 +1,199 @@
+---
+title: Binomial Distribution Examples
+author: David Brewer
+date: '2020-05-24'
+slug: binomial-distribution-examples
+categories:
+  - Statistics
+tags:
+  - R
+  - Statistics
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-05-24T23:09:32-06:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+<div id="binomial-distribution" class="section level3">
+<h3>Binomial Distribution</h3>
+The binomial distribution describes the probability of having exactly <em>k</em> successes in <em>n</em> independent Bernoulli trials with probability of success <em>p</em><br />
+<br>
+<br>
+<strong>Binomial Conditions</strong>
+<ul>
+<li>
+The trials must be independent
+<li>
+The number of trials, <em>n</em> must be fixed
+<li>
+Each trial outcome must be classified as success or failure
+<li>
+The probability of success, <em>p</em>, must be the same for each trial
+</ul>
+<strong>Here are some important definitions:</strong><br />
+
+<ul>
+<li>
+<a href="https://en.wikipedia.org/wiki/Bernoulli_trial">Bernoulli trial (or binomial trial):</a><br />
+A random experiment with exactly two possible outcomes, “success” and “failure”, in which the probability of success is the same every time the experiment is conducted.
+<br>
+<li>
+<a href="https://web.stanford.edu/class/archive/cs/cs109/cs109.1178/lectureHandouts/070-bernoulli-binomial.pdf">Bernoulli Random Variables:</a><br />
+An individual trial with only two possible outcomes.<br />
+<br>
+Here is an example of a Bernoulli Random Variable:<br />
+
+<ul>
+<li>
+Say there are exactly four trials with only one success and three failures
+<li>
+This is a random sample of people, so the trials can be said to be independent
+<li>
+This probability can be calculated as:<br />
+number of scenarios X P(single scenario)<br />
+
+<li>
+P(single scenario) is written like this:<br />
+<img src="/Probability%20of%20single%20scenario.JPG" /><br />
+This is basically the probability of success raised to the number of successes times the probability of failure raised to the number of failures
+<li>
+<p>number of scenarios can be found using the <em>choose function</em> written like this<br />
+<img src="/choose%20function.JPG" /><br />
+Using R we can run the choose function like this:</p>
+<pre class="r"><code>n &lt;- 1
+k &lt;- 4
+choose(k, n)</code></pre>
+<pre><code>## [1] 4</code></pre>
+</ul>
+</ul>
+<br>
+<br>
+<br>
+<strong>Here are some important formulas:</strong><br />
+
+<ul>
+<li>
+<a href="https://en.wikipedia.org/wiki/Binomial_distribution">Probability Mass Function</a><br />
+<img src="/probability%20mass%20function.JPG" />
+<li>
+Standard Deviation of a binomial:<span class="math inline">\(\sqrt(np*(1-p))\)</span>
+</ul>
+<br>
+<br>
+<br>
+<strong>Here are some important functions in R:</strong>
+<ul>
+<li>
+dbinom
+<li>
+Binomial distribution shiny app <a href="https://gallery.shinyapps.io/dist_calc/">here</a>
+</ul>
+<p><strong>So what’s the difference between the binomial distribution and the Bernoulli distribution?</strong>
+<br>
+<br>
+<em>“Binomial distribution is one of the discrete probability distributions. Unlike Bernoulli distribution which asks whether or not an event occurs or happens (success vs failure) — the Binomial distribution asks about the number of times the event has successfully occurred (number of successes).”</em></p>
+<strong>Here is an example using the binomial distribution to answer a question:</strong>
+<br><a href="https://datascienceupskill.com/statistics/understanding-binomial-distribution">Source</a>
+<center>
+<img src="/binomial_distribution_example_bearded_men_on_tinder.png" />
+</center>
+<br>
+<br>
+<strong>Here is a basic example of the binomial distribution:</strong>
+<br>
+<a href="http://www.r-tutor.com/elementary-statistics/probability-distributions/binomial-distribution">Source</a><br />
+<br>
+<center>
+<strong>Guessing multiple choice questions</strong>
+</center>
+<br>
+<center>
+<img src="/simpsonstest7.gif" />
+</center>
+<p><br>
+<strong>Problem</strong><br />
+Suppose there are twelve multiple choice questions in an statistics class quiz. Each question has five possible answers, and only one of them is correct. Find the probability of having four or fewer correct answers if a student attempts to answer every question at random.
+<br>
+<br>
+<strong>Solution</strong><br />
+Since only one out of five possible answers is correct, the probability of answering a question correctly by random is 1/5=0.2. We can find the probability of having exactly 4 correct answers by random attempts as follows.</p>
+<pre class="r"><code>dbinom(4, size=12, prob=0.2)</code></pre>
+<pre><code>## [1] 0.1328756</code></pre>
+This means there is approxamately a 13.28% chance of guessing <strong>exactly</strong> four correct answers by random attempts…or basically if enough students all took the same quiz and all students guessed randomly, ~13% would have four correct answers.
+<br>
+<br>
+Plotting this helps visualize what is going on here:
+<ul>
+<li>
+You can see that guessing exactly four correct answers is ~13% chance
+<li>
+The highest chance is guessing two correct
+<li>
+Anywhere from one to four correct guesses is likely
+</ul>
+<p><br>
+<img src="/post/2020-05-24-binomial-distribution-examples_files/figure-html/plot%20of%20binomial%20example%20one-1.png" width="672" />
+<br>
+However, the question is about the <strong>probability of guessing four or less correct answers</strong>…
+To find the probability of having four or fewer correct answers by random attempts, we apply the function dbinom with x = 0,1,2,3,4</p>
+<pre class="r"><code>dbinom(0, size=12, prob=0.2) + 
++ dbinom(1, size=12, prob=0.2) + 
++ dbinom(2, size=12, prob=0.2) + 
++ dbinom(3, size=12, prob=0.2) + 
++ dbinom(4, size=12, prob=0.2)</code></pre>
+<pre><code>## [1] 0.9274445</code></pre>
+<p>So this means there is a ~92.7% chance of guessing four or fewer answers correct.<br />
+Taking the compliment of this probability means there is ~7.3% chance of guessing five or more answers correct. <br></p>
+Here is a function I wrote to enter:
+<ul>
+<li>
+number of correct guesses
+<li>
+number of questions
+<li>
+number of choices on each question
+</ul>
+<pre class="r"><code>cumulative_probability_function(4, 12, 5)</code></pre>
+<pre><code>## [1] &quot;There is a 92.74% chance of guessing 4 or fewer questions correct out of 12 multiple choice questions with 5 choices per question.&quot;</code></pre>
+<pre class="r"><code>#Example of T/F questions
+cumulative_probability_function(4, 12, 2)</code></pre>
+<pre><code>## [1] &quot;There is a 19.38% chance of guessing 4 or fewer questions correct out of 12 multiple choice questions with 2 choices per question.&quot;</code></pre>
+<p><br>
+Plotting this helps visualize what is going on here<br />
+<img src="/post/2020-05-24-binomial-distribution-examples_files/figure-html/plot%20of%20binomial%20example%20four-1.png" width="672" /><img src="/post/2020-05-24-binomial-distribution-examples_files/figure-html/plot%20of%20binomial%20example%20four-2.png" width="672" />
+<br>
+Alternatively, we can use the cumulative probability function for binomial distribution pbinom.</p>
+<pre class="r"><code>pbinom(4, size=12, prob=0.2) </code></pre>
+<pre><code>## [1] 0.9274445</code></pre>
+Again there is a ~92.7% chance of guessing four or fewer answers correct.
+<br>
+<br>
+<strong>Plotting the Cumulative Distribution Function:</strong><br />
+
+<ul>
+<li>
+Basically what I did here was use the pbinom function on a vector of 1:12 and assigned probabilities from .5 to .1 with size=12
+<li>
+The black shows the T/F example
+<li>
+The dark blue is the multiple choice with five chioces per question
+<li>
+The light blue is multiple choice with ten choices per question
+</ul>
+<p><img src="/post/2020-05-24-binomial-distribution-examples_files/figure-html/plotting%20the%20binomial%20cdf%20one-1.png" width="672" />
+<br>
+Here is the same thing with 40 questions instead of 12:
+<br>
+<img src="/post/2020-05-24-binomial-distribution-examples_files/figure-html/plotting%20the%20binomial%20cdf%20two-1.png" width="672" />
+<br>
+<br>
+<br></p>
+</div>

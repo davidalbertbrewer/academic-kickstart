@@ -1,0 +1,266 @@
+---
+title: Binomial Distribution Examples
+author: David Brewer
+date: '2020-05-24'
+slug: binomial-distribution-examples
+categories:
+  - Statistics
+tags:
+  - R
+  - Statistics
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-05-24T23:09:32-06:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+### Binomial Distribution
+The binomial distribution describes the probability of having exactly *k* successes in *n* independent Bernoulli trials with probability of success *p*  
+<br>
+<br>
+**Binomial Conditions**
+<ul>
+<li>The trials must be independent
+<li>The number of trials, *n* must be fixed
+<li>Each trial outcome must be classified as success or failure
+<li>The probability of success, *p*, must be the same for each trial
+</ul>
+
+
+**Here are some important definitions:**  
+<ul>
+<li>[Bernoulli trial (or binomial trial):](https://en.wikipedia.org/wiki/Bernoulli_trial)  
+A random experiment with exactly two possible outcomes, "success" and "failure", in which the probability of success is the same every time the experiment is conducted.
+<br>
+<li>[Bernoulli Random Variables:](https://web.stanford.edu/class/archive/cs/cs109/cs109.1178/lectureHandouts/070-bernoulli-binomial.pdf)  
+An individual trial with only two possible outcomes.  
+<br>
+Here is an example of a Bernoulli Random Variable:  
+<ul>
+  <li>Say there are exactly four trials with only one success and three failures
+  <li>This is a random sample of people, so the trials can be said to be independent
+  <li>This probability can be calculated as:  
+  number of scenarios X P(single scenario)  
+  <li>P(single scenario) is written like this:  
+  ![](/Probability of single scenario.JPG)  
+  This is basically the probability of success raised to the number of successes times the probability of failure raised to the number of failures
+  <li>number of scenarios can be found using the *choose function* written like this    
+  ![](/choose function.JPG)  
+  Using R we can run the choose function like this:  
+```{r choose function}
+n <- 1
+k <- 4
+choose(k, n)
+```
+</ul>
+</ul>
+<br>
+<br>
+<br>
+**Here are some important formulas:**  
+<ul>
+<li>[Probability Mass Function](https://en.wikipedia.org/wiki/Binomial_distribution)  
+![](/probability mass function.JPG) 
+<li> Standard Deviation of a binomial:$\sqrt(np*(1-p))$
+</ul>
+<br>
+<br>
+<br>
+**Here are some important functions in R:**
+<ul>
+<li>dbinom
+<li>Binomial distribution shiny app [here](https://gallery.shinyapps.io/dist_calc/)
+</ul>
+**So what's the difference between the binomial distribution and the Bernoulli distribution?**
+<br>
+<br>
+*"Binomial distribution is one of the discrete probability distributions. Unlike Bernoulli distribution which asks whether or not an event occurs or happens (success vs failure) — the Binomial distribution asks about the number of times the event has successfully occurred (number of successes)."*
+
+**Here is an example using the binomial distribution to answer a question:**
+<br>[Source](https://datascienceupskill.com/statistics/understanding-binomial-distribution)
+<center>![](/binomial_distribution_example_bearded_men_on_tinder.png)</center> 
+<br>
+<br>
+**Here is a basic example of the binomial distribution:**
+<br>
+[Source](http://www.r-tutor.com/elementary-statistics/probability-distributions/binomial-distribution)  
+<br>
+<center>**Guessing multiple choice questions**</center>
+<br>
+<center>![](/simpsonstest7.gif)</center>
+<br>
+**Problem**  
+Suppose there are twelve multiple choice questions in an statistics class quiz. Each question has five possible answers, and only one of them is correct. Find the probability of having four or fewer correct answers if a student attempts to answer every question at random.
+<br>
+<br>
+**Solution**  
+Since only one out of five possible answers is correct, the probability of answering a question correctly by random is 1/5=0.2. We can find the probability of having exactly 4 correct answers by random attempts as follows.
+```{r binomial example one}
+dbinom(4, size=12, prob=0.2)
+```
+This means there is approxamately a 13.28% chance of guessing **exactly** four correct answers by random attempts...or basically if enough students all took the same quiz and all students guessed randomly, ~13% would have four correct answers.
+<br>
+<br>
+Plotting this helps visualize what is going on here:
+<ul>
+  <li>You can see that guessing exactly four correct answers is ~13% chance
+  <li>The highest chance is guessing two correct
+  <li>Anywhere from one to four correct guesses is likely
+</ul>
+<br>
+```{r plot of binomial example one, echo=FALSE}
+x <- 1:12
+plot(dbinom(x, size=12, prob=0.2)
+     , xaxt="n"
+     , xlab = "Number of correct answers"
+     , ylab = "P"
+     , main = "Unlikely to guess 7+ correct out of 12 multiple choice")
+axis(1, at=x, labels=x, las=1)
+#this doesn't work
+# bindat <- rbinom(12, 4, .2)
+# hist(bindat, breaks=12)
+```
+<br>
+However, the question is about the **probability of guessing four or less correct answers**...
+To find the probability of having four or fewer correct answers by random attempts, we apply the function dbinom with x = 0,1,2,3,4
+```{r binomial example two}
+dbinom(0, size=12, prob=0.2) + 
++ dbinom(1, size=12, prob=0.2) + 
++ dbinom(2, size=12, prob=0.2) + 
++ dbinom(3, size=12, prob=0.2) + 
++ dbinom(4, size=12, prob=0.2)
+```
+So this means there is a ~92.7% chance of guessing four or fewer answers correct.  
+Taking the compliment of this probability means there is ~7.3% chance of guessing five or more answers correct. <br>
+```{r cumulative probability function, echo=FALSE}
+cumulative_probability_function <- 
+  function(correct_guesses
+           , number_of_questions
+           , number_of_choices_per_question){
+  probability_answering_correctly_at_random <- 1/number_of_choices_per_question
+  cumulative_probability <- 0
+  for(n in 0:correct_guesses){
+    current_probability <- dbinom(n
+                                  , size=number_of_questions
+                                  , prob=probability_answering_correctly_at_random)
+    cumulative_probability <- current_probability + cumulative_probability
+  }
+  result_string <- paste("There is a ", round(cumulative_probability*100, 2)
+              , "% chance of guessing ", correct_guesses
+              , " or fewer questions correct out of ", number_of_questions
+              , " multiple choice questions with ", number_of_choices_per_question
+              , " choices per question."
+              , sep = "")
+  return(result_string)
+}
+```
+Here is a function I wrote to enter:
+<ul>
+<li>number of correct guesses
+<li>number of questions
+<li>number of choices on each question
+</ul>
+```{r binomial example three}
+cumulative_probability_function(4, 12, 5)
+#Example of T/F questions
+cumulative_probability_function(4, 12, 2)
+```
+<br>
+Plotting this helps visualize what is going on here  
+```{r plot of binomial example four, echo=FALSE}
+x <- 1:12
+plot(pbinom(x,size=12,prob=.2)
+     , xaxt="n"
+     , xlab = "Number of questions (or fewer) correct by random guess"
+     , ylab = "P"
+     , main = "Twelve Multiple Choice Questions")
+axis(1, at=x, labels=x, las=1)
+
+x <- 1:12
+plot(pbinom(x,size=12,prob=.5)
+     , xaxt="n"
+     , xlab = "Number of questions (or fewer) correct by random guess"
+     , ylab = "P"
+     , main = "Twelve T/F Questions")
+axis(1, at=x, labels=x, las=1)
+```
+<br>
+Alternatively, we can use the cumulative probability function for binomial distribution pbinom.
+```{r binomial example four}
+pbinom(4, size=12, prob=0.2) 
+```
+Again there is a ~92.7% chance of guessing four or fewer answers correct.
+<br>
+<br>
+**Plotting the Cumulative Distribution Function:**  
+<ul>
+<li>Basically what I did here was use the pbinom function on a vector of 1:12 and assigned probabilities from .5 to .1 with size=12
+<li>The black shows the T/F example
+<li>The dark blue is the multiple choice with five chioces per question
+<li>The light blue is multiple choice with ten choices per question
+</ul>
+```{r plotting the binomial cdf one, echo=FALSE}
+number_of_questions <- 12
+probs <- c(.5, .4, (1/3), .2, .1)
+colors <- c("red", "green", "blue", "light blue", "black")
+df <- data.frame(x = numeric(0)
+                 , y = numeric(0)
+                 , z = character(0))
+n <- 1
+for(n in 1:length(probs)){
+  x <- 1:number_of_questions
+  y <- pbinom(x,size=number_of_questions,prob=probs[n])
+  z <- rep(colors[n], number_of_questions)
+  add_df <- data.frame(x = x
+                       , y = y
+                       , z = z)
+  df <- rbind(df, add_df)
+}
+
+plot(df$x
+     , df$y
+     , col=df$z
+     , xlab = ""
+     , ylab = "p"
+     , main = "Cumulative Distribution Function"
+     , type='p')
+```
+<br>
+Here is the same thing with 40 questions instead of 12:
+<br>
+```{r plotting the binomial cdf two, echo=FALSE}
+number_of_questions <- 40
+probs <- c(.5, .4, (1/3), .2, .1)
+colors <- c("red", "green", "blue", "light blue", "black")
+df <- data.frame(x = numeric(0)
+                 , y = numeric(0)
+                 , z = character(0))
+n <- 1
+for(n in 1:length(probs)){
+  x <- 1:number_of_questions
+  y <- pbinom(x,size=number_of_questions,prob=probs[n])
+  z <- rep(colors[n], number_of_questions)
+  add_df <- data.frame(x = x
+                       , y = y
+                       , z = z)
+  df <- rbind(df, add_df)
+}
+
+plot(df$x
+     , df$y
+     , col=df$z
+     , xlab = ""
+     , ylab = "p"
+     , main = "Cumulative Distribution Function"
+     , type='p')
+```
+<br>
+<br>
+<br>
+
