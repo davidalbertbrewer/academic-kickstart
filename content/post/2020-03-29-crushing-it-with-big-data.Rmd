@@ -20,20 +20,10 @@ image:
 projects: []
 ---
 In Feb. 2015, I was an undergraduate student at the University of Montana and I signed up for a five week seminar course taught by [John Chandler](https://www.linkedin.com/in/johncp/) called "Crushing I.T. with Big Data"....*pun intended.*  
-<br>
-<ul>
-<li>The sessions were **four hours long**, including a snacktime :) 
-<li>He taught how to **code Python from the command line and [IDLE](https://docs.python.org/3/library/idle.html)**....  
-*IDLE is that "GUI" Python installs "which has been bundled with the default implementation of the language since 1.5.2b1" according to the Wikipedia page.*
-<br>
-![](/start-python-idle-in-windows.png)
-
 
 <li>In addition to the [textbook](https://www.amazon.com/Algorithms-Data-Science-Brian-Steele/dp/3319833731) John was writing, to begin each session we had a discussion of another book we were to read titled [Dataclysm](https://www.amazon.com/gp/product/0385347375/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) written by arguably the most famous data scientist at the time, [Christian Rudder](https://fivethirtyeight.com/features/christian-rudder-dataclysm-okcupid/).  
 </ul>
-<h3> Thanks to John and Christian, I was hooked on data. </h3>
-<br>
-So what better way to start this blog than to revisit an example from Dataclysm and the [OKCupid blog](https://theblog.okcupid.com/the-big-lies-people-tell-in-online-dating-a9e3990d6ae2).  
+For this post, I will revisit an example from Dataclysm and the [OKCupid blog](https://theblog.okcupid.com/the-big-lies-people-tell-in-online-dating-a9e3990d6ae2).  
   
 Dataclysm is subtitled  "Who We Are (When We Think No One's Looking)" and this blog post titled "The Big Lies People Tell In Online Dating" explores a simple example of height. 
 <br>
