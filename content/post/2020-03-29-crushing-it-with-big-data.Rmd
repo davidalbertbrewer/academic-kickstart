@@ -1,23 +1,22 @@
 ---
-title: Crushing I.T. with Big Data
-author: David Brewer
+title: "Crushing I.T. with Big Data"
+author: "David Brewer"
 date: '2020-03-29'
-slug: crushing-it-with-big-data
-categories:
-  - Statistics
-tags:
-  - R
-  - Statistics
-subtitle: ''
-summary: ''
-authors: []
-lastmod: '2020-03-29T17:54:22-06:00'
+categories: Statistics
 featured: no
 image:
   caption: ''
   focal_point: ''
   preview_only: no
+lastmod: '2020-03-29T17:54:22-06:00'
 projects: []
+slug: crushing-it-with-big-data
+subtitle: ''
+summary: ''
+tags:
+- R
+- Statistics
+authors: []
 ---
 In Feb. 2015, I was an undergraduate student at the University of Montana and I signed up for a five week seminar course taught by [John Chandler](https://www.linkedin.com/in/johncp/) called "Crushing I.T. with Big Data"....*pun intended.*  
 
