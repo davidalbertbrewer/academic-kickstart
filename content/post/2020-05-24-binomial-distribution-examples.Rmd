@@ -82,11 +82,7 @@ choose(k, n)
 <br>
 *"Binomial distribution is one of the discrete probability distributions. Unlike Bernoulli distribution which asks whether or not an event occurs or happens (success vs failure) — the Binomial distribution asks about the number of times the event has successfully occurred (number of successes)."*
 
-**Here is an example using the binomial distribution to answer a question:**
-<br>[Source](https://datascienceupskill.com/statistics/understanding-binomial-distribution)
-<center>![](/binomial_distribution_example_bearded_men_on_tinder.png)</center> 
-<br>
-<br>
+
 **Here is a basic example of the binomial distribution:**
 <br>
 [Source](http://www.r-tutor.com/elementary-statistics/probability-distributions/binomial-distribution)  
